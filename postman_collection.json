@@ -1,0 +1,9 @@
+{
+  "info": { "name": "Fleet API - smartclip Demo", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "item": [
+    { "name": "POST event", "request": { "method": "POST", "url": "http://localhost:3000/api/events", "body": { "mode": "raw", "raw": "{\"vehicleId\":\"EK123\",\"lat\":24.5,\"lon\":54.4,\"speed\":80,\"fuel\":50,\"eventType\":\"gps\"}" } } },
+    { "name": "GET events paginated", "request": { "method": "GET", "url": "http://localhost:3000/api/events?page=1&limit=20" } },
+    { "name": "GET daily report", "request": { "method": "GET", "url": "http://localhost:3000/api/reports/daily" } },
+    { "name": "GET top vehicles", "request": { "method": "GET", "url": "http://localhost:3000/api/analytics/top-vehicles?limit=5" } }
+  ]
+}
