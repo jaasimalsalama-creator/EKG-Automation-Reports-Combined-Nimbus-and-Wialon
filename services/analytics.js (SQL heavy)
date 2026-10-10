@@ -1,0 +1,51 @@
+const db = require('../db');
+
+function getTopVehiclesByMileage(limit=10, cb){
+  db.all(`
+    SELECT vehicleId, COUNT(*) as trips, SUM(fuel) as totalFuel,
+           AVG(speed) as avgSpeed
+    FROM events
+    GROUP BY vehicleId
+    ORDER BY trips DESC
+    LIMIT ?
+  `,[limit],cb);
+}
+
+function getHourlyDistribution(cb){
+  db.all(`
+    SELECT strftime('%H', timestamp) as hour, COUNT(*) as events
+    FROM events
+    GROUP BY hour
+    ORDER BY hour
+  `,[],cb);
+}
+
+function getIdleVehicles(thresholdMinutes=60, cb){
+  db.all(`
+    SELECT vehicleId, MAX(timestamp) as lastSeen,
+           (julianday('now') - julianday(MAX(timestamp)))*24*60 as minutesIdle
+    FROM events
+    GROUP BY vehicleId
+    HAVING minutesIdle > ?
+  `,[thresholdMinutes],cb);
+}
+
+function getFuelAnomaly(cb){
+  db.all(`
+    SELECT vehicleId, AVG(fuel) as avgFuel, MAX(fuel) as maxFuel
+    FROM events
+    GROUP BY vehicleId
+    HAVING maxFuel > avgFuel * 1.5
+  `,[],cb);
+}
+
+function getGeoFenceViolations(latMin, latMax, lonMin, lonMax, cb){
+  db.all(`
+    SELECT * FROM events
+    WHERE lat NOT BETWEEN ? AND ?
+    OR lon NOT BETWEEN ? AND ?
+    ORDER BY timestamp DESC LIMIT 100
+  `,[latMin, latMax, lonMin, lonMax],cb);
+}
+
+module.exports = { getTopVehiclesByMileage, getHourlyDistribution, getIdleVehicles, getFuelAnomaly, getGeoFenceViolations };
