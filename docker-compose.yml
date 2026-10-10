@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  api:
+    build:.
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - API_KEY=demo_smartclip_2026
+    restart: unless-stopped
