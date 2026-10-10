@@ -1,0 +1,14 @@
+{
+  "name": "fleet-telematics-api-demo",
+  "version": "1.0.0",
+  "description": "Node.js & SQL API - Fleet data pipeline demo for smartclip",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "dev": "node server.js" },
+  "author": "Gassem Alsalamah",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "cors": "^2.8.5"
+  }
+}
